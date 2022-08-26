@@ -67,7 +67,7 @@ namespace NotifySlackOfWebMeetingsAdmin.Apis
             ILogger log)
         {
             // Get a JSON document from the container.
-            Uri collectionUri = UriFactory.CreateDocumentCollectionUri("Notify-Slack-of-web-meetings-db", "SlackChannels");
+            Uri collectionUri = UriFactory.CreateDocumentCollectionUri("Notify-Slack-of-web-meetings-db", "Users");
             IDocumentQuery<User> query = client.CreateDocumentQuery<User>(collectionUri, new FeedOptions { EnableCrossPartitionQuery = true, PopulateQueryMetrics = true })
                 .Where(queryParameter.GetWhereExpression())
                 .AsDocumentQuery();
