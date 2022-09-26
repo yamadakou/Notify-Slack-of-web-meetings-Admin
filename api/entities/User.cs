@@ -33,11 +33,5 @@ namespace NotifySlackOfWebMeetingsAdmin.Apis.entities
         /// </summary>
         [JsonProperty("emailAddress")]
         public string EmailAddress { get; set; }
-        
-        /// <summary>
-        /// ユーザープリンシパル名
-        /// </summary>
-        [JsonProperty("userPrincipal")]
-        public string UserPrincipal { get; set; }
     }
 }
