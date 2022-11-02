@@ -15,6 +15,8 @@ using Microsoft.Azure.Documents.Linq;
 using System.Linq;
 using FluentValidation;
 using Newtonsoft.Json.Serialization;
+using Microsoft.Azure.Documents;
+using User = NotifySlackOfWebMeetingsAdmin.Apis.entities.User;
 
 namespace NotifySlackOfWebMeetingsAdmin.Apis
 {
@@ -58,8 +60,7 @@ namespace NotifySlackOfWebMeetingsAdmin.Apis
                 validator.ValidateAndThrow(user);
 
                 // ユーザー情報を登録
-                message
-                 = await AddUsers(documentsOut, user);
+                message = await AddUsers(documentsOut, user);
             }
 
             catch (Exception ex)
@@ -157,6 +158,86 @@ namespace NotifySlackOfWebMeetingsAdmin.Apis
                 }
             }
             
+            return documentItems;
+        }
+
+        #endregion
+
+        #region ユーザーの削除
+        
+        /// <summary>
+        /// ユーザー情報を削除する。
+        /// </summary>
+        /// <param name="req">HTTPリクエスト。</param>
+        /// <param name="client">CosmosDBのドキュメントクライアント。</param>
+        /// <param name="log">ロガー。</param>
+        /// <returns>削除したユーザー情報。</returns>
+        [FunctionName("DeleteUserById")]
+        public static async Task<IActionResult> DeleteUserById(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Users/{id}")] HttpRequest req,
+            [CosmosDB(
+                databaseName: "Notify-Slack-of-web-meetings-db",
+                collectionName: "Users",
+                ConnectionStringSetting = "CosmosDbConnectionString")
+                ]DocumentClient client,
+            ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+            string message = string.Empty;
+
+            try
+            {
+                string id = req.RouteValues["id"].ToString();
+                log.LogInformation($"DELETE users/{id}");
+
+                // ユーザー情報を削除
+                var documentItems = await DeleteUserById(client, id, log);
+
+                if(!documentItems.Any())
+                {
+                    return new NotFoundObjectResult($"Target item not found. Id={id}");
+                }
+                message = JsonConvert.SerializeObject(documentItems);
+
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
+
+            return new OkObjectResult(message);
+        }
+
+         /// <summary>
+        /// ユーザー情報を削除する。
+        /// </summary>
+        /// <param name="client">CosmosDBのドキュメントクライアント。</param>
+        /// <param name="ids">削除するユーザー情報のID一覧。</param>
+        /// <param name="log">ロガー。</param>
+        /// <returns>削除したユーザー情報。</returns>
+        private static async Task<IEnumerable<User>> DeleteUserById(
+            DocumentClient client,
+            string ids,
+            ILogger log)
+        {
+            // 事前に存在確認後に削除
+
+            // クエリパラメータに削除するユーザー情報のIDを設定
+            UsersQueryParameter queryParameter = new UsersQueryParameter()
+            {
+                Ids = ids,
+            };
+
+            // ユーザー情報を取得
+            var documentItems = await GetUsersAsync(client, queryParameter, log);
+            foreach (var documentItem in documentItems)
+            {
+                // ユーザー情報を削除
+                // Delete a JSON document from the container.
+                Uri documentUri = UriFactory.CreateDocumentUri("Notify-Slack-of-web-meetings-db", "Users", documentItem.Id);
+                await client.DeleteDocumentAsync(documentUri, new RequestOptions() { PartitionKey = new PartitionKey(documentItem.Id) });
+            }
+
             return documentItems;
         }
 
