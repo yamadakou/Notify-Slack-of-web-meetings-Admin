@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Azure.Documents.Client;
 using System.Collections.Generic;
-using NotifySlackOfWebMeetingsAdmin.Apis.entities;
+using NotifySlackOfWebMeetingsAdmin.Apis.Entities;
 using NotifySlackOfWebMeetingsAdmin.Apis.Queries;
 using Microsoft.Azure.Documents.Linq;
 using System.Linq;
