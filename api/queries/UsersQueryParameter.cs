@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Linq;
 using System.Collections.Generic;
 using LinqKit;
-using NotifySlackOfWebMeetingsAdmin.Apis.entities;
+using NotifySlackOfWebMeetingsAdmin.Apis.Entities;
 
 namespace NotifySlackOfWebMeetingsAdmin.Apis.Queries
 {

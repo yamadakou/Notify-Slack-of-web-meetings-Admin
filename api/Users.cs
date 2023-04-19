@@ -16,7 +16,7 @@ using System.Linq;
 using FluentValidation;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Azure.Documents;
-using User = NotifySlackOfWebMeetingsAdmin.Apis.entities.User;
+using User = NotifySlackOfWebMeetingsAdmin.Apis.Entities.User;
 
 namespace NotifySlackOfWebMeetingsAdmin.Apis
 {

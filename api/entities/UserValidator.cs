@@ -1,7 +1,7 @@
 using System;
 using FluentValidation;
 
-namespace NotifySlackOfWebMeetingsAdmin.Apis.entities
+namespace NotifySlackOfWebMeetingsAdmin.Apis.Entities
 {
     public class UserValidator : AbstractValidator<User>
     {
