@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace NotifySlackOfWebMeetingsAdmin.Api.Entities
+namespace NotifySlackOfWebMeetingsAdmin.Apis.Entities
 {
   /// <summary>
   /// Slackチャンネルを表す
