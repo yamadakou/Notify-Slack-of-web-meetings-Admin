@@ -128,3 +128,10 @@ https://learn.microsoft.com/ja-jp/azure/static-web-apps/getting-started?tabs=rea
 
 1. 管理者向けサイトにログイン後、サイドナビの[ユーザー一覧]を選択します。
 2. 任意のユーザーの認可トークンをコピーします。
+
+
+## （関連リポジトリ）
+* Notify Slack of web meetings
+  * https://github.com/yamadakou/Notify-Slack-of-web-meetings
+* Notify Slack of web meeting CLI
+  * https://github.com/yamadakou/notify-slack-of-web-meeting.cli
